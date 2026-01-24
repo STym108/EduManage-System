@@ -1,0 +1,89 @@
+.payment-history-wrapper {
+    padding: 30px;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 4px 25px rgba(0,0,0,0.05);
+}
+
+.history-header {
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #f7fafc;
+}
+
+.history-header h2 {
+    color: #2d3748;
+    margin: 0;
+}
+
+.history-header p {
+    color: #718096;
+    margin-top: 5px;
+}
+
+.history-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.history-table th {
+    text-align: left;
+    padding: 15px;
+    background: #f8fafc;
+    color: #4a5568;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.history-table td {
+    padding: 18px 15px;
+    border-bottom: 1px solid #edf2f7;
+    font-size: 0.95rem;
+    color: #2d3748;
+}
+
+/* Date & Time Column */
+.date-time {
+    display: flex;
+    flex-direction: column;
+}
+
+.date { font-weight: 600; }
+.time { font-size: 0.8rem; color: #a0aec0; }
+
+/* Amount Styling */
+.amount-cell {
+    font-weight: 800;
+    color: #10b981; /* Green for income */
+}
+
+/* Remark Tag */
+.remark-tag {
+    background: #ebf4ff;
+    color: #3182ce;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.student-name-cell {
+    font-weight: 700;
+}
+
+.delete-mini-btn {
+    background-color: #fff5f5;
+    color: #e53e3e;
+    border: 1px solid #feb2b2;
+    padding: 8px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.delete-mini-btn:hover {
+    background-color: #e53e3e;
+    color: white;
+    border-color: #e53e3e;
+}

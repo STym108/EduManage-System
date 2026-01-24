@@ -1,0 +1,285 @@
+.signup {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(to right,#f6cfbe,#b9dcf2);
+}
+  
+  .signup-box {
+    width: 70%;
+    height: 90vh;
+    display: flex;
+    flex-direction: row;
+    background-color: rgb(142, 177, 177);
+    border-width: 3px;
+    border-radius: 25px;
+    overflow: hidden;
+    padding-bottom: 2px;
+  }
+  
+  .signup-left {
+    width: 50%;
+    height: 100%;
+    background-color: #fafafa;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: bisque;
+
+  }
+  
+  .signup-left img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  
+  .signup-right {
+    width: 50%;
+    padding: 3rem 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: #9ead79;
+  }
+  
+  .signup-right h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    color: #333;
+  }
+  
+  .signup-form {
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .signup-form input {
+    padding: 0.9rem 1rem;
+    font-size: 1rem;
+    border: 1px solid #c7c7c7;
+    border-radius: 8px;
+    outline: none;
+    transition: 0.3s ease;
+  }
+  
+  .signup-form input:focus {
+    border-color: #726bef;
+    box-shadow: 0 0 0 3px rgba(89, 81, 243, 0.2);
+  }
+  
+  .signup-form button {
+    margin-top: 0.5rem;
+    padding: 0.9rem;
+    background-color: #665fec;
+    border: none;
+    color: #fff;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s ease;
+  }
+  .createaccountlink{
+    text-decoration: none;
+    color: white;
+
+  }
+  .create-account{
+    margin-top: 20px;
+    background-color: #0088ff;
+    padding: 8px;
+    border-radius: 8px;
+
+  }
+  
+  
+  .signup-form button:hover {
+    background-color: #5850f1;
+  }
+  .image-url {
+    height: 50px;
+    width: 80px;                /* fixed width */
+    object-fit: cover;          /* crop + keep layout stable */
+    border-radius: 8px;
+    margin-top: 0.5rem;
+    margin-left: 30%;
+  }
+  .Toastify__toast-container {
+    z-index: 9999;
+}
+
+/* dashboard styling  */
+
+/* style.css */
+.dashboard-container {
+    height: 100%;
+    width: 100vw;
+    display: flex;
+    background-color: #efedf3; /* Light lavender background like your image */
+}
+
+/* Sidebar Styling */
+
+/* Main Content and Topbar */
+.main-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 2vh 20px;
+    margin-left: -20px;
+
+}
+
+.topbar-container {
+    width: 100%;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end; /* ✅ Pushes everything to the right */
+    padding-right: 20px;
+    background: #374151;
+    color: #FFFFFF;    border-radius: 8px;
+
+}
+
+.user-profile-section {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.profile-img {
+    width: 45px;
+    height: 45px;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.institute-name {
+    font-weight: 700;
+    color: #c5b5b5;
+    font-size: 1rem;
+}
+
+.logout-btn {
+    background-color: #FF5E7E; /* Pinkish logout button like screenshot */
+    color: white;
+    border: none;
+    padding: 4px 12px;
+    border-radius: 5px;
+    font-size: 0.75rem;
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: 2px;
+}
+
+.logout-btn:hover {
+    background-color: #e04a68;
+}
+
+/* //navbar styling  */
+/* Sidebar Main Container */
+.nav-container {
+  width: 190px;
+  /* ✅ This makes it stay fixed while scrolling */
+  position: sticky; 
+  top: 2vh; 
+  
+  /* ✅ Perfect height: Full screen minus the top/bottom margins */
+  height: calc(100vh - 4vh); 
+  
+  margin: 2vh 0 2vh 20px;
+  background: #1F2937;   /* dark slate */
+  color: #E5E7EB; border-radius: 15px;
+  color: white;
+  padding: 30px 20px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 5px 0 15px rgba(127, 77, 255, 0.2);
+  
+  /* Prevents the sidebar itself from growing if content inside increases */
+  overflow-y: auto; 
+}
+
+/* Optional: Make the scrollbar inside the navbar invisible for a cleaner look */
+.nav-container::-webkit-scrollbar {
+  width: 0px;
+}
+
+/* Header of navbar */
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 40px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    height: 10%;
+    width: 100%;
+}
+
+.sidebar-header h3 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+/* Menu Section */
+.menu {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Space between links */
+    flex-grow: 1; /* Pushes footer to bottom */
+}
+
+/* Individual Links */
+.menu a {
+    text-decoration: none;
+    color: #D1D5DB;
+        font-size: 1rem;
+    font-weight: 500;
+    padding: 12px 15px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.3s ease;
+}
+
+/* Hover Effect */
+.menu a:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    transform: translateX(5px);
+}
+
+/* Active Page Style ✅ */
+.menu a.active {
+    background: white;
+    color: #7F4DFF;
+    font-weight: 700;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Footer Section */
+.sidebar-footer {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.5);
+    text-align: center;
+    margin-top: 20px;
+}
+

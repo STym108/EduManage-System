@@ -1,0 +1,10 @@
+
+# Ignore node_modules in the root and all subfolders
+node_modules/
+
+# Ignore environment variables (very important for security)
+.env
+
+# Ignore build folders
+dist/
+tmp/

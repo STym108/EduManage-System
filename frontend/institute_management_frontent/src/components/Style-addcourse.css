@@ -1,0 +1,118 @@
+.form-page-wrapper {
+    padding: 20px;
+    animation: fadeIn 0.5s ease;
+}
+
+.form-card {
+    background: white;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    max-width: 900px;
+}
+
+.form-header {
+    margin-bottom: 25px;
+}
+
+.form-header h2 {
+    color: #2D3748;
+    font-size: 1.5rem;
+    margin-bottom: 5px;
+}
+
+.form-header p {
+    color: #718096;
+    font-size: 0.9rem;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.input-group label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #4A5568;
+}
+
+.input-group input, 
+.input-group textarea {
+    padding: 12px;
+    border: 1px solid #E2E8F0;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    outline: none;
+    transition: 0.2s;
+}
+
+.input-group input:focus, 
+.input-group textarea:focus {
+    border-color: #7F4DFF;
+    box-shadow: 0 0 0 3px rgba(127, 77, 255, 0.1);
+}
+
+/* Image Upload Styling */
+.image-upload-section {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background: #F8FAFC;
+    padding: 15px;
+    border-radius: 10px;
+    margin-top: 10px;
+}
+
+.upload-box {
+    width: 150px;
+    height: 90px;
+    border: 2px dashed #CBD5E0;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.upload-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.upload-info span {
+    font-size: 0.75rem;
+    color: #A0AEC0;
+}
+
+.primary-btn {
+    background: #7F4DFF;
+    color: white;
+    border: none;
+    padding: 14px 30px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 20px;
+    width: 100%;
+    transition: 0.3s;
+}
+
+.primary-btn:hover {
+    background: #6b3ee6;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}

@@ -1,0 +1,134 @@
+/* Container for all cards */
+.courses-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 15px;
+    padding: 20px 0;
+}
+
+/* Individual Card */
+.course-card {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    border: 1px solid #edf2f7;
+    display: flex;
+    flex-direction: column;
+    height: 200px;
+    width: 280px;
+}
+
+/* Hover Effect: Card lifts up and shadow deepens */
+.course-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+}
+
+/* Image Section */
+.course-image-wrapper {
+    position: relative;
+    height: 42%;
+    width: 100%;
+    overflow: hidden;
+}
+
+.course-card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.course-card:hover .course-card-img {
+    transform: scale(1.1); /* Subtle zoom on image */
+}
+
+/* Price Badge */
+.price-badge {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: #f488f9;
+    color: white;
+    padding: 6px 14px;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    box-shadow: 0 4px 10px rgba(127, 77, 255, 0.3);
+}
+
+/* Content Section */
+.course-card-content {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    height: 58%;
+}
+
+.course-title {
+    font-size: 1.15rem;
+    color: #2d3748;
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+.course-description {
+    color: #718096;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    /* margin-bottom: 20px; */
+    flex-grow: 1;
+}
+
+/* Footer Section */
+.course-card-footer {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+    /* padding-top: 15px; */
+    border-top: 1px solid #f1f5f9;
+}
+
+.date-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.8rem;
+    color: #a0aec0;
+}
+
+.view-details-btn {
+    background: #f7fafc;
+    color: #7F4DFF;
+    border: 1px solid #7F4DFF;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.view-details-btn:hover {
+    background: #7F4DFF;
+    color: white;
+}
+
+.course-detail-btnl{
+margin-top: 6px;
+    padding: 4px 12px;
+    background-color: #72b2ef;  
+    color: #080e15; 
+    border-radius: 5px;
+    text-decoration: none;
+    transition: 0.2s;
+}
+.course-detail-btn{
+    margin-top: 6px;
+    }
+    .course-detail-btnl:hover{
+        background-color: #2589e1;
+    }

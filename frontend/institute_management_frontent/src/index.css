@@ -1,0 +1,14 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+background: linear-gradient(to right,#f6cfbe,#b9dcf2);
+min-height: 100vh; /* This forces the body to fill the screen */
+  width: 100vw;
+display: flex;
+align-items: center;
+justify-content: center;
+}
