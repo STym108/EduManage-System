@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import './HomeStyle.css';
+import Api from './api.js'
+
 
 const Home = () => {
   const userData = JSON.parse(localStorage.getItem('user'));
@@ -18,7 +20,7 @@ const Home = () => {
     const fetchDashboardData = async () => {
         try {
             const token = localStorage.getItem('token');
-            const resp = await axios.get('http://localhost:3000/stats', {
+            const resp = await Api.get('/stats', {
                 headers: { Authorization: `Bearer ${token}` }
             });
 

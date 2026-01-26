@@ -3,6 +3,8 @@ import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
 import "./ViewStudentstyle.css";
+import Api from './api.js'
+
 
 const Viewstudent = () => {
   // 1. ALL HOOKS AT THE TOP
@@ -23,16 +25,16 @@ const Viewstudent = () => {
       const headers = { Authorization: `Bearer ${token}` };
 
       // Fetch Student Details
-      const studentResp = await axios.get(
-        `http://localhost:3000/student/view-student/${id}`,
+      const studentResp = await Api.get(
+        `/student/view-student/${id}`,
         { headers }
       );
       const studentData = studentResp.data.details;
       setStudent(studentData);
 
       // Fetch Payment History using student phone and courseId
-      const feeResp = await axios.get(
-        `http://localhost:3000/fees/payment-history?courseId=${studentData.courseId}&phone=${studentData.phone}`,
+      const feeResp = await Api.get(
+        `/fees/payment-history?courseId=${studentData.courseId}&phone=${studentData.phone}`,
         { headers }
       );
       setPaymentHistory(feeResp.data.payments);
@@ -60,8 +62,8 @@ const Viewstudent = () => {
     e.preventDefault();
     try {
       const token = localStorage.getItem("token");
-      await axios.put(
-        `http://localhost:3000/fees/update-fee/${editingPayment._id}`,
+      await Api.put(
+        `/fees/update-fee/${editingPayment._id}`,
         {
           amount: updatedAmount,
           remark: updatedRemark,

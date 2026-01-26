@@ -2,6 +2,8 @@ import React, { useState,useEffect } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import './Style-addcourse.css'
+import Api from './api.js'
+
 const AddStudents = () => {
   const [StudentName, setStudentName] = useState('');
   const [phone, setphone] = useState('');
@@ -25,7 +27,7 @@ const AddStudents = () => {
   //getting all the courses so that all can be showed in drop down to select the course in which the student is enrolled into
   const getallcourse = async () => {
     try {
-      const response = await axios.get('http://localhost:3000/course/all-courses', {
+      const response = await Api.get('/course/all-courses', {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`
         }
@@ -63,7 +65,7 @@ const AddStudents = () => {
     formData.append('image', image);
     try {
       const token = localStorage.getItem('token');
-      await axios.post('http://localhost:3000/student/add-students', formData, {
+      await Api.post('/student/add-students', formData, {
         headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'multipart/form-data' }
       });
       toast.success("Student Added Successfully!");

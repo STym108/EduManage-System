@@ -4,8 +4,12 @@ import './Style.css'
 import cover from './Assets/logincover.png'
 import axios from 'axios'
 import {toast,ToastContainer} from 'react-toastify';
+import Api from './api.js'
+
 import 'react-toastify/dist/ReactToastify.css';
-import { Link } from 'react-router-dom';const Login = () => {
+
+import { Link } from 'react-router-dom';
+const Login = () => {
 
   const navigate=useNavigate()
 
@@ -21,8 +25,8 @@ const [buttonloader, setbuttonloader] = useState(false);
     setbuttonloader(true)
     
     try {
-      const response = await axios.post(
-        "http://localhost:3000/user/Login",
+      const response = await Api.post(
+        "/user/Login",
         {email:email,
           password:password
         },

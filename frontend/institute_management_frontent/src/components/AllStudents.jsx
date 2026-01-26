@@ -3,6 +3,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import './allstudentStyle.css';
+import Api from './api.js'
 
 const AllStudents = () => {
     const [students, setStudents] = useState([]);
@@ -12,7 +13,7 @@ const AllStudents = () => {
     const fetchLatestStudents = async () => {
         try {
             const token = localStorage.getItem('token');
-            const resp = await axios.get('http://localhost:3000/student/latest-students', {
+            const resp = await Api.get('/student/latest-students', {
                 headers: { Authorization: `Bearer ${token}` }
             });
             // Based on your backend: res.status(200).json({ students: lateststudents });

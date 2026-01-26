@@ -2,6 +2,8 @@ import React from 'react'
 import coaching_image from './Assets/signupcover.png'; 
 import './style.css'
 import { Link, useLocation } from 'react-router-dom'
+import Api from './api.js'
+
 
 const Navbar = () => {
   const location = useLocation(); // Used to highlight the active link

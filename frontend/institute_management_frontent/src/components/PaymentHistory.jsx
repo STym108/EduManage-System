@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import './paymentHistoryStyle.css';
+import Api from './api.js'
+
 
 const PaymentHistory = () => {
     const [transactions, setTransactions] = useState([]);
@@ -10,7 +12,7 @@ const PaymentHistory = () => {
     const fetchHistory = async () => {
         try {
             const token = localStorage.getItem('token');
-            const resp = await axios.get('http://localhost:3000/fees/recent-transactions', {
+            const resp = await Api.get('/fees/recent-transactions', {
                 headers: { Authorization: `Bearer ${token}` }
             });
             setTransactions(resp.data.transactions);
@@ -27,7 +29,7 @@ const PaymentHistory = () => {
         if (window.confirm("Are you sure you want to delete this payment record? This will affect total calculations.")) {
             try {
                 const token = localStorage.getItem('token');
-                await axios.delete(`http://localhost:3000/fees/delete-fee/${id}`, {
+                await Api.delete(`/fees/delete-fee/${id}`, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
                 toast.success("Transaction deleted successfully");

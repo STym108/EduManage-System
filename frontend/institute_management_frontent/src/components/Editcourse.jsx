@@ -4,6 +4,8 @@ import { toast } from 'react-toastify';
 import './Style-addcourse.css'
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import Api from './api.js'
+
 
 const Editcourse = () => {
 const navigate=useNavigate();
@@ -24,8 +26,8 @@ const [coursedetail, setcoursedetail] = useState([]);
 
   const getcoursedetails = async () => {
     try {
-      const resp = await axios.get(
-        `http://localhost:3000/course/course-detail/${id}`,
+      const resp = await Api.get(
+        `/course/course-detail/${id}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -76,7 +78,7 @@ const [coursedetail, setcoursedetail] = useState([]);
 
     try {
       const token = localStorage.getItem('token');
-      await axios.put(`http://localhost:3000/course/update-course/${id}`, formData, {
+      await Api.put(`/course/update-course/${id}`, formData, {
         headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'multipart/form-data' }
       });
     toast.success("Course Updated  Successfully!");

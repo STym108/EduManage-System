@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import './CollectFeesstyle.css';
+import Api from './api.js'
 
 const CollectFee = () => {
     const [courses, setCourses] = useState([]);
@@ -20,7 +21,7 @@ const CollectFee = () => {
     useEffect(() => {
         const fetchCourses = async () => {
             try {
-                const resp = await axios.get('http://localhost:3000/course/all-courses', {
+                const resp = await Api.get('/course/all-courses', {
                     headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
                 });
                 // Assuming backend returns { courses: [] } or just []
@@ -43,7 +44,7 @@ const CollectFee = () => {
         try {
             const token = localStorage.getItem('token');
             // The structured logic we discussed: sending phone and courseId as identifiers
-            const resp = await axios.post('http://localhost:3000/fees/add-fees', formData, {
+            const resp = await Api.post('/fees/add-fees', formData, {
                 headers: { Authorization: `Bearer ${token}` }
             });
 

@@ -7,6 +7,9 @@ import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { Deletecourse } from "./DeleteCoursefun";
 import { useNavigate } from "react-router-dom";
+import Api from './api.js'
+
+
 const ViewCourse = () => {
 
     const navigate = useNavigate();
@@ -16,8 +19,8 @@ const ViewCourse = () => {
   let { id } = useParams();
   const getcoursedetails = async () => {
     try {
-      const resp = await axios.get(
-        `http://localhost:3000/course/course-detail/${id}`,
+      const resp = await Api.get(
+        `/course/course-detail/${id}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,

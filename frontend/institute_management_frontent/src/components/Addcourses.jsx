@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import './Style-addcourse.css'
+import Api from './api.js'
 const Addcourses = () => {
   const [courseName, setCourseName] = useState('');
   const [price, setPrice] = useState('');
@@ -34,7 +35,7 @@ const Addcourses = () => {
 
     try {
       const token = localStorage.getItem('token');
-      await axios.post('http://localhost:3000/course/add-course', formData, {
+      await Api.post('/course/add-course', formData, {
         headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'multipart/form-data' }
       });
       toast.success("Course Published Successfully!");
