@@ -1,6 +1,6 @@
 import React from 'react'
 import coaching_image from './Assets/signupcover.png'; 
-import './style.css'
+import './Style.css'
 import { Link, useLocation } from 'react-router-dom'
 
 
