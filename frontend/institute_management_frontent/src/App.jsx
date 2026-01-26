@@ -16,12 +16,18 @@ import PaymentHistory from './components/PaymentHistory'
 import ViewCourse from './components/ViewCourse'
 import Editcourse from './components/Editcourse'
 import Viewstudent from './components/Viewstudent'
+import ProtectedRoute from './components/ProtectedRoute'
+
 const App = () => {
 const myrouter=createBrowserRouter([
   { path: "/", element: <Signup /> },
   { path: "/login", element: <Login /> },
   { path: "/signup", element: <Signup /> },
-  { path: "/dashboard", element: <Dashboard />,children:[
+  { path: "/dashboard", element: (
+    <ProtectedRoute>
+      <Dashboard />
+    </ProtectedRoute>
+  ),children:[
     {path:'',element:<Home/>},
     {path:'home',element:<Home/>},
     {path:'add-course',element:<Addcourses/>},

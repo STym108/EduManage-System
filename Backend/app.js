@@ -22,8 +22,6 @@ mongoose.connect(`${process.env.mongostring}`)
 .catch(err=>{
     console.log('Error while connecting: ', err);
 });
- 
-
 app.use(bodyparser.json());
 
 //this file upload middleware is for : when images\files get uploaded from frontend , this will store them temp in the server then upload on **cloudinary
