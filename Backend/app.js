@@ -15,7 +15,7 @@ require('dotenv').config();
 app.use(bodyparser.urlencoded({ extended: false }))
 
 // Add 'Institut_Management_System' after the .net/
-mongoose.connect(`${process.env.string}`)
+mongoose.connect(`${process.env.mongostring}`)
 .then(()=>{
     console.log('Database connected: ', mongoose.connection.name);
 })
