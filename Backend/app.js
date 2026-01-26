@@ -15,7 +15,7 @@ require('dotenv').config();
 app.use(bodyparser.urlencoded({ extended: false }))
 
 // Add 'Institut_Management_System' after the .net/
-mongoose.connect('mongodb+srv://shivam:shivam123@firstdb.z1gdx.mongodb.net/Institut_Management_System?retryWrites=true&w=majority&appName=FirstDB')
+mongoose.connect(`${process.env.string}`)
 .then(()=>{
     console.log('Database connected: ', mongoose.connection.name);
 })
