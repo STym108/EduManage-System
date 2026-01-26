@@ -17,7 +17,7 @@ import ViewCourse from './components/ViewCourse'
 import Editcourse from './components/Editcourse'
 import Viewstudent from './components/Viewstudent'
 import ProtectedRoute from './components/ProtectedRoute'
-import Api from './api.js'
+
 
 
 const App = () => {

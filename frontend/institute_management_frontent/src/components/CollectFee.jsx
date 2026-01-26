@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import './CollectFeesstyle.css';
-import Api from './api.js'
+import API from './api.js'
 
 const CollectFee = () => {
     const [courses, setCourses] = useState([]);
@@ -21,7 +21,7 @@ const CollectFee = () => {
     useEffect(() => {
         const fetchCourses = async () => {
             try {
-                const resp = await Api.get('/course/all-courses', {
+                const resp = await API.get('/course/all-courses', {
                     headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
                 });
                 // Assuming backend returns { courses: [] } or just []

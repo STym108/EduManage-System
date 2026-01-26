@@ -2,7 +2,7 @@ import React, { useState,useEffect } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import './Style-addcourse.css'
-import Api from './api.js'
+import API from './api.js'
 
 const AddStudents = () => {
   const [StudentName, setStudentName] = useState('');
@@ -27,7 +27,7 @@ const AddStudents = () => {
   //getting all the courses so that all can be showed in drop down to select the course in which the student is enrolled into
   const getallcourse = async () => {
     try {
-      const response = await Api.get('/course/all-courses', {
+      const response = await API.get('/course/all-courses', {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`
         }

@@ -7,19 +7,19 @@ import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { Deletecourse } from "./DeleteCoursefun";
 import { useNavigate } from "react-router-dom";
-import Api from './api.js'
+import API from './api.js'
 
 
 const ViewCourse = () => {
 
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   const [studentid, setstudentid] = useState();
   const [coursedetail, setcoursedetail] = useState([]);
   const [studentlist, setstudentlist] = useState([]);
   let { id } = useParams();
   const getcoursedetails = async () => {
     try {
-      const resp = await Api.get(
+      const resp = await API.get(
         `/course/course-detail/${id}`,
         {
           headers: {

@@ -6,7 +6,7 @@ import axios from 'axios'
 import {toast,ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Link } from 'react-router-dom'
-import Api from './api.js'
+import API from './api.js'
 
 
 const Signup = () => {
@@ -31,7 +31,7 @@ const [buttonloader, setbuttonloader] = useState(false);
     formdata.append("image", image);
 
     try {
-      const response = await Api.post(
+      const response = await API.post(
         "/user/signup",
         formdata,
         {

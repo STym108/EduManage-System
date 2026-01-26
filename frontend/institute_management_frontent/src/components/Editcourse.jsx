@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import './Style-addcourse.css'
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-import Api from './api.js'
+import API from './api.js'
 
 
 const Editcourse = () => {
@@ -26,7 +26,7 @@ const [coursedetail, setcoursedetail] = useState([]);
 
   const getcoursedetails = async () => {
     try {
-      const resp = await Api.get(
+      const resp = await API.get(
         `/course/course-detail/${id}`,
         {
           headers: {
@@ -78,7 +78,7 @@ const [coursedetail, setcoursedetail] = useState([]);
 
     try {
       const token = localStorage.getItem('token');
-      await Api.put(`/course/update-course/${id}`, formData, {
+      await API.put(`/course/update-course/${id}`, formData, {
         headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'multipart/form-data' }
       });
     toast.success("Course Updated  Successfully!");

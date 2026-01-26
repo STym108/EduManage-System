@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
 import "./ViewStudentstyle.css";
-import Api from './api.js'
+import API from './api.js'
 
 
 const Viewstudent = () => {
@@ -25,7 +25,7 @@ const Viewstudent = () => {
       const headers = { Authorization: `Bearer ${token}` };
 
       // Fetch Student Details
-      const studentResp = await Api.get(
+      const studentResp = await API.get(
         `/student/view-student/${id}`,
         { headers }
       );
@@ -33,7 +33,7 @@ const Viewstudent = () => {
       setStudent(studentData);
 
       // Fetch Payment History using student phone and courseId
-      const feeResp = await Api.get(
+      const feeResp = await API.get(
         `/fees/payment-history?courseId=${studentData.courseId}&phone=${studentData.phone}`,
         { headers }
       );
@@ -62,7 +62,7 @@ const Viewstudent = () => {
     e.preventDefault();
     try {
       const token = localStorage.getItem("token");
-      await Api.put(
+      await API.put(
         `/fees/update-fee/${editingPayment._id}`,
         {
           amount: updatedAmount,

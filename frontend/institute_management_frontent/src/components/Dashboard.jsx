@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
 import { Outlet } from "react-router-dom"; // ✅ MUST IMPORT THIS
 import userimage from './Assets/user.png'
-import Api from './api.js'
+
 
 const Dashboard = () => {
   const navigate = useNavigate();

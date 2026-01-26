@@ -4,7 +4,7 @@ import './Style.css'
 import cover from './Assets/logincover.png'
 import axios from 'axios'
 import {toast,ToastContainer} from 'react-toastify';
-import Api from './api.js'
+import API from './api.js'
 
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -25,7 +25,7 @@ const [buttonloader, setbuttonloader] = useState(false);
     setbuttonloader(true)
     
     try {
-      const response = await Api.post(
+      const response = await API.post(
         "/user/Login",
         {email:email,
           password:password

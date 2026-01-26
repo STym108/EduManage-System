@@ -1,8 +1,9 @@
 import axios from 'axios'
 import { toast } from 'react-toastify'
-import Api from './api.js'
+import API from './api.js'
 export  async function  Deletecourse(id){
- try{const resp=await Api.delete(`/course/delete-course/${id}`,{
+  
+ try{const resp=await API.delete(`/course/delete-course/${id}`,{
     headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`
       }

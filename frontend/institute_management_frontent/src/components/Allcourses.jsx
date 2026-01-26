@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import "./allcourses-styling.css";
-import Api from './api.js'
+import API from './api.js'
 import { Link } from "react-router-dom";
 const Allcourses = () => {
   const [courselist, setcourselist] = useState([]); // Initialized as empty array
@@ -15,7 +15,7 @@ const Allcourses = () => {
 
   const getallcourse = async () => {
     try {
-      const response = await Api.get(
+      const response = await API.get(
         "/course/all-courses",
         {
           headers: {
