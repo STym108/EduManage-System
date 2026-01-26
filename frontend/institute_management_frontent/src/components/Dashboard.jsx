@@ -1,5 +1,5 @@
 import React from "react";
-import "./style.css";
+import "./Style.css";
 import coaching_image from './Assets/signupcover.png'; 
 import { useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
