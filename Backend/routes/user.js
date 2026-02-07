@@ -1,14 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../models/users');
+const User = require('../models/users.js');
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const cloudinary = require('cloudinary').v2;
 const jwt=require('jsonwebtoken');
 require('dotenv').config(); // ✅ ADD THIS BACK
-
-//email:sampleemail@
-//password:samplepassword
 
 cloudinary.config({
     cloud_name: process.env.CLOUD_NAME,
@@ -111,5 +108,10 @@ router.post('/login', async (req, res) => {
         res.status(500).json({ error: "Internal server error" });
     }
 });
+
+
+
+
+
 
 module.exports = router;

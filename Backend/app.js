@@ -8,6 +8,7 @@ const studentroute=require('./routes/student')
 const feesroute=require('./routes/fees')
 const courseroute=require('./routes/courses')
 const statsroute=require('./routes/statsroute')
+const verifyotp=require('./routes/otprouter')
 const cors =require('cors');
 app.use(cors())
 require('dotenv').config();
@@ -32,12 +33,12 @@ app.use(fileUpload({
 // Middleware to parse JSON (Crucial for MERN!)
 app.use(express.json());
 
+
 app.use('/stats',statsroute);
 app.use('/user',userroute)
 app.use('/course',courseroute)
 app.use('/fees',feesroute)
 app.use('/student',studentroute)
-
-
+app.use('/verify',verifyotp)
 
 module.exports=app
