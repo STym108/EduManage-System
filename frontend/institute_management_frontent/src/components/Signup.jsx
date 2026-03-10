@@ -8,7 +8,6 @@ import 'react-toastify/dist/ReactToastify.css';
 import { Link } from 'react-router-dom'
 import API from './api.js'
 
-
 const Signup = () => {
 
   const navigate=useNavigate()

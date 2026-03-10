@@ -65,7 +65,7 @@ const AddStudents = () => {
     formData.append('image', image);
     try {
       const token = localStorage.getItem('token');
-      await Api.post('/student/add-students', formData, {
+      await API.post('/student/add-students', formData, {
         headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'multipart/form-data' }
       });
       toast.success("Student Added Successfully!");
