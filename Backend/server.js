@@ -4,10 +4,12 @@
 // This file initializes the HTTP server, applies environmental configuration,
 // and forces custom DNS resolvers to avoid flaky local DNS lookups for Atlas.
 
-const dns = require('dns');
-// Set DNS servers to Google DNS and Cloudflare DNS to bypass flaky local ISP DNS.
-// This resolves the MongoDB Atlas SRV querySrv ENOTFOUND error.
-dns.setServers(['8.8.8.8', '1.1.1.1']);
+// Set DNS servers to Google DNS and Cloudflare DNS to bypass flaky local ISP DNS (only locally).
+// Overriding DNS globally on Render breaks their internal DNS configuration for Atlas queries.
+if (!process.env.RENDER) {
+    const dns = require('dns');
+    dns.setServers(['8.8.8.8', '1.1.1.1']);
+}
 
 const http = require('http');
 require('dotenv').config(); // Load environment variables from .env
