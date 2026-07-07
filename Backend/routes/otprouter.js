@@ -34,9 +34,19 @@ router.post('/send-otp', async (req, res) => {
         };
 
         // 4. Send the Email
-        await transporter.sendMail(mailOptions);
-
-        res.status(200).json({ message: "OTP sent successfully to " + email });
+        try {
+            await transporter.sendMail(mailOptions);
+            res.status(200).json({ message: "OTP sent successfully to " + email });
+        } catch (mailErr) {
+            console.warn(`[WARNING] SMTP Email dispatch failed: "${mailErr.message}". falling back to logging OTP locally.`);
+            console.log(`\n===============================================\n[DEV OTP LOG] For ${email} -> CODE: ${otpCode}\n===============================================\n`);
+            
+            // Still respond with 200 to allow local testing and development
+            res.status(200).json({ 
+                message: `OTP generated. (SMTP Email dispatch failed, but you can find the code in your backend terminal log: ${otpCode})`,
+                devOtpCode: otpCode // Exposing it for local debugging convenience
+            });
+        }
 
     } catch (err) {
         console.error(err);

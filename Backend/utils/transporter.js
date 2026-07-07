@@ -8,8 +8,8 @@ const nodemailer=require('nodemailer')
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-        user: process.env.EMAIL_USER, // Your Gmail address
-        pass: process.env.EMAIL_PASS  // Your 16-character App Password
+        user: process.env.EMAIL_USER ? process.env.EMAIL_USER.trim() : '',
+        pass: process.env.EMAIL_PASS ? process.env.EMAIL_PASS.trim() : ''
     }
 });
 
@@ -21,3 +21,5 @@ transporter.verify((error, success) => {
         console.log("Server is ready to send emails");
     }
 });
+
+module.exports = transporter;

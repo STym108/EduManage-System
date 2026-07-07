@@ -17,14 +17,16 @@ import ViewCourse from './components/ViewCourse'
 import Editcourse from './components/Editcourse'
 import Viewstudent from './components/Viewstudent'
 import ProtectedRoute from './components/ProtectedRoute'
-
-
+import ForgotPassword from './components/ForgotPassword'
+import UpdateProfile from './components/UpdateProfile'
+import ManageStaff from './components/ManageStaff'
 
 const App = () => {
 const myrouter=createBrowserRouter([
   { path: "/", element: <Signup /> },
   { path: "/login", element: <Login /> },
   { path: "/signup", element: <Signup /> },
+  { path: "/forgot-password", element: <ForgotPassword /> },
   { path: "/dashboard", element: (
     <ProtectedRoute>
       <Dashboard />
@@ -41,7 +43,9 @@ const myrouter=createBrowserRouter([
     {path:'view-course/:id',element:<ViewCourse/>},
     {path:'edit-course/:id',element:<Editcourse/>},
     {path:'delete-course/:id',element:<Editcourse/>},
-    {path:'view-student/:id',element:<Viewstudent/>}
+    {path:'view-student/:id',element:<Viewstudent/>},
+    {path:'update-profile',element:<UpdateProfile/>},
+    {path:'manage-staff',element:<ManageStaff/>}
   ] }
 ])
   return (

@@ -28,18 +28,16 @@ const AddStudents = () => {
   const getallcourse = async () => {
     try {
       const response = await API.get('/course/all-courses', {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`
-        }
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
       });
       
-      // ✅ Log response.data to see exactly where your array is
-      // console.log("Server Response:", response.data);
-      
-      // ✅ Set the array, not the whole response object
-      // If your backend sends { courses: [] }, use response.data.courses
-      setcourselist(response.data.courses || response.data); 
-
+      const courses = response.data.courses || response.data;
+      setcourselist(courses); 
+  
+      // ✅ Set the first course as default so selectedcourse isn't empty
+      if (courses.length > 0) {
+        setselectedcourse(courses[0]._id);
+      }
     } catch (err) {
       console.error(err);
       toast.error('Could not fetch courses');
@@ -64,14 +62,16 @@ const AddStudents = () => {
     formData.append('courseId',selectedcourse)
     formData.append('image', image);
     try {
+      
       const token = localStorage.getItem('token');
-      await Api.post('/student/add-students', formData, {
+      await API.post('/student/add-students', formData, {
         headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'multipart/form-data' }
       });
       toast.success("Student Added Successfully!");
       // Clear form
     } catch (err) {
-      toast.error(err.response?.data?.error || "Failed to add Student");
+      toast.error(err.response?.data?.error ||  `Failed to add Student ${err} `);
+
     } finally {
       setLoading(false);
     }

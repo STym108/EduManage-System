@@ -11,6 +11,8 @@ import API from './api.js'
 
 
 const ViewCourse = () => {
+  const userData = JSON.parse(localStorage.getItem('user'));
+  const isAdmin = !userData || userData.role === 'admin';
 
   const navigate = useNavigate();
   const [studentid, setstudentid] = useState();
@@ -72,10 +74,12 @@ const ViewCourse = () => {
           <div className="course-info-box">
     {/* /* course delete and edit button  edit button =route to edit page , delete btn=call the delete course api  */}
 
-          <div className="edit-delete-container">
-        <Link to={`/dashboard/edit-course/${id}`} className="edit-link">Edit</Link>
-        <button className="delete-button" onClick={deletebuttonhandler} >Delete</button>
-      </div>
+          {isAdmin && (
+            <div className="edit-delete-container">
+              <Link to={`/dashboard/edit-course/${id}`} className="edit-link">Edit</Link>
+              <button className="delete-button" onClick={deletebuttonhandler} >Delete</button>
+            </div>
+          )}
 
             <div className="info-header">
               <h1 className="course-title-text">{coursedetail.courseName}</h1>
@@ -118,8 +122,44 @@ const ViewCourse = () => {
                 </p>
                 <p>
                   <i className="fas fa-phone"></i> {st.phone}
-
                 </p>
+                
+                {/* Visual tags displaying enrolled courses/subjects */}
+                <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap', marginTop: '6px', marginBottom: '10px' }}>
+                  {st.courses && st.courses.length > 0 ? (
+                    st.courses.map((c) => (
+                      <span 
+                        key={c._id} 
+                        style={{ 
+                          padding: '2px 8px', 
+                          background: c._id === id ? '#eef2ff' : '#f3f4f6', 
+                          color: c._id === id ? '#4f46e5' : '#4b5563', 
+                          borderRadius: '10px', 
+                          fontSize: '10px', 
+                          fontWeight: '600',
+                          border: c._id === id ? '1px solid #c7d2fe' : '1px solid #e5e7eb'
+                        }}
+                      >
+                        {c.courseName}
+                      </span>
+                    ))
+                  ) : (
+                    <span 
+                      style={{ 
+                        padding: '2px 8px', 
+                        background: '#eef2ff', 
+                        color: '#4f46e5', 
+                        borderRadius: '10px', 
+                        fontSize: '10px', 
+                        fontWeight: '600',
+                        border: '1px solid #c7d2fe'
+                      }}
+                    >
+                      {coursedetail.courseName}
+                    </span>
+                  )}
+                </div>
+
                 <div className="stdntdetail-div">
                     <button className="student-view-btn"
                      onClick={()=>{StdntDetailhandler(st._id)}}> view details</button>

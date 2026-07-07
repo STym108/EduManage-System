@@ -14,69 +14,162 @@ cloudinary.config({
 });
 const router=express.Router()
 
-//add new student
-router.post('/add-students',checkAuth,(req,res)=>{
-        //  Check if files exist before calling cloudinary
-        if (!req.files || !req.files.image) {
-            return res.status(400).json({ error: "No image uploaded" });
+// Add or enroll student
+router.post('/add-students', checkAuth, async (req, res) => {
+    try {
+        const { fullName, phone, email, address, courseId } = req.body;
+        const teacherId = req.userData.adminId;
+
+        // 1. Check if student already exists under this teacher by phone or email
+        const existingStudent = await Students.findOne({
+            teacherId,
+            $or: [{ phone }, { email }]
+        });
+
+        if (existingStudent) {
+            // Check if student is already enrolled in this course
+            const alreadyEnrolled = existingStudent.courses && existingStudent.courses.includes(courseId);
+            if (alreadyEnrolled) {
+                return res.status(400).json({ error: "Student is already enrolled in this course." });
+            }
+
+            // Append new course to their enrolled courses array
+            if (!existingStudent.courses) {
+                existingStudent.courses = [];
+            }
+            existingStudent.courses.push(courseId);
+            
+            // Update legacy courseId field for backward compatibility
+            existingStudent.courseId = courseId;
+
+            const savedStudent = await existingStudent.save();
+            return res.status(200).json({ 
+                message: "Existing student enrolled in course successfully",
+                newaddedStudent: savedStudent 
+            });
         }
-    // 1. Upload Image to Cloudinary
+
+        // 2. If student does not exist, upload profile photo and create a new record
+        if (!req.files || !req.files.image) {
+            return res.status(400).json({ error: "Profile image is required for new student registration." });
+        }
+
+        // Upload Image to Cloudinary
         cloudinary.uploader.upload(req.files.image.tempFilePath, async (err, result) => {
             if (err) {
                 console.log("Cloudinary Config Error:", err);
                 return res.status(500).json({ error: "Cloudinary upload failed" });
             }
-            //keeping the await part in try block hence following try catch rule  for async await to avoid asynchronous error 
+
             try {
-                 // 3. Create new student object
-    
-                    const newstudent = new Students({
-                        _id:new mongoose.Types.ObjectId(),//missed 'new' last time while making the id of the new course 
-                        fullName:req.body.fullName,
-                        phone:req.body.phone,
-                        address:req.body.address,
-                        email:req.body.email,
-                        imageUrl: result.secure_url,
-                        imageId: result.public_id,
-                        teacherId:req.userData.userId,
-                        courseId:req.body.courseId
-                    });
-                   //  4. Save to Database
-    
-                    const savedStudent = await newstudent.save();
-                    res.status(201).json({ newaddedStudent: savedStudent });
-            
+                const newstudent = new Students({
+                    _id: new mongoose.Types.ObjectId(),
+                    fullName,
+                    phone,
+                    address,
+                    email,
+                    imageUrl: result.secure_url,
+                    imageId: result.public_id,
+                    teacherId,
+                    courses: [courseId],
+                    courseId // legacy backward compatibility
+                });
+
+                const savedStudent = await newstudent.save();
+                res.status(201).json({ newaddedStudent: savedStudent });
             } catch (dbError) {
                 console.log("Mongoose Save Error:", dbError.message);
-                //  Detailed error message for Postman debugging
                 res.status(500).json({ 
                     error: "Database saving failed", 
                     details: dbError.message 
                 });
             }
         });
+
+    } catch (err) {
+        console.error("Add Student Error:", err.message);
+        res.status(500).json({ error: "Internal server error", details: err.message });
+    }
 })
 
 //get all student of a course added by a  teacher 
 
-router.get('/get-allStudents/:id',checkAuth,async (req,res)=>{
-       
-    try{
-       const thecourse =await Course.findById(req.params.id)
+// get all student created by logged-in teacher with live balances
+router.get('/all', checkAuth, async (req, res) => {
+    try {
+        const teacherId = req.userData.adminId;
+        const allstudents = await Students.find({ teacherId }).populate('courses');
 
+        // Fetch all fees to calculate outstanding dues per student
+        const Fees = require('../models/fees');
+        const allFees = await Fees.find({ creatorId: teacherId });
 
-       if(thecourse.creatorId!=req.userData.userId) return res.status(500).send("you are not the creator of this course")
+        // Map phone number to sum of paid fees
+        const paymentMap = {};
+        allFees.forEach(fee => {
+            if (fee.phone) {
+                paymentMap[fee.phone] = (paymentMap[fee.phone] || 0) + (fee.amount || 0);
+            }
+        });
 
-        const findstudents=await Students.find({courseId:thecourse._id})
-        console.log("found all the students of this course ")
-        res.status(200).send(findstudents)
+        // Compute balances for each student
+        const studentsWithBalances = await Promise.all(allstudents.map(async (st) => {
+            const studentObj = st.toObject();
+            
+            // Handle legacy course fallback
+            if (studentObj.courseId && (!studentObj.courses || studentObj.courses.length === 0)) {
+                const legacyCourse = await Course.findById(studentObj.courseId);
+                if (legacyCourse) {
+                    studentObj.courses = [legacyCourse];
+                }
+            }
+
+            const totalPaid = paymentMap[studentObj.phone] || 0;
+            const totalCourseCost = studentObj.courses ? studentObj.courses.reduce((sum, c) => sum + (c.price || 0), 0) : 0;
+            const outstandingDue = Math.max(0, totalCourseCost - totalPaid);
+
+            studentObj.totalPaid = totalPaid;
+            studentObj.outstandingDue = outstandingDue;
+            return studentObj;
+        }));
+        
+        res.status(200).json({
+            count: studentsWithBalances.length,
+            students: studentsWithBalances
+        });
+    } catch (err) {
+        console.error("Fetch Error:", err.message);
+        res.status(500).json({
+            error: "Could not fetch students list",
+            details: err.message
+        });
     }
-    catch(err){
+});
+
+//get all student of a course added by a teacher
+router.get('/get-allStudents/:id', checkAuth, async (req, res) => {
+    try {
+        const thecourse = await Course.findById(req.params.id);
+        if (!thecourse) return res.status(404).json({ error: "Course not found" });
+        if (thecourse.creatorId != req.userData.adminId) {
+            return res.status(403).json({ error: "Unauthorized: You are not the creator of this course" });
+        }
+
+        // Find students that have this courseId in either legacy or normalized array
+        const findstudents = await Students.find({
+            $or: [
+                { courseId: thecourse._id },
+                { courses: thecourse._id }
+            ]
+        });
+        console.log("found all the students of this course ");
+        res.status(200).json(findstudents);
+    } catch (err) {
         return res.status(500).json({
-            'error':err.message
-        })
+            error: err.message
+        });
     }
-})
+});
 //delete student api (only the teacher who added the student  can remove/delete )
 
 router.delete('/delete-student/:id',checkAuth,async (req,res)=>{
@@ -122,7 +215,7 @@ router.put('/update-student/:id',checkAuth,async (req,res)=>{
         }
 
         // 2. Permission Check
-        if (existingstudent.teacherId != req.userData.userId) {
+        if (existingstudent.teacherId != req.userData.adminId) {
             return res.status(403).json({ error: "Unauthorized: Only the creator can update this student" });
         }
 
@@ -170,19 +263,28 @@ router.put('/update-student/:id',checkAuth,async (req,res)=>{
 // get latest 5 students
 router.get('/latest-students', checkAuth, async (req, res) => {
     try { 
-     // 1. Filter by the logged-in user's ID
-     // 2. Sort by _id descending (-1) to get the newest first
-     // 3. Limit to 5 results
-     const lateststudents = await Students.find({ teacherId: req.userData.userId })
+     const lateststudents = await Students.find({ teacherId: req.userData.adminId })
+         .populate('courses')
          .sort({ _id: -1 }) 
          .limit(5);
  
+     // Handle legacy fallback for backward compatibility
+     const processedStudents = await Promise.all(lateststudents.map(async (st) => {
+         const studentObj = st.toObject();
+         if (studentObj.courseId && (!studentObj.courses || studentObj.courses.length === 0)) {
+             const legacyCourse = await Course.findById(studentObj.courseId);
+             if (legacyCourse) {
+                 studentObj.courses = [legacyCourse];
+             }
+         }
+         return studentObj;
+     }));
+
      res.status(200).json({
-         count: lateststudents.length,
-         students: lateststudents
+         count: processedStudents.length,
+         students: processedStudents
      });
     } catch (err) {
-     // ✅ FIX 2: Handle errors so the server doesn't hang
      console.error("Fetch Error:", err.message);
      res.status(500).json({
          error: "Could not fetch latest students",
@@ -191,11 +293,24 @@ router.get('/latest-students', checkAuth, async (req, res) => {
     }
  });
 
-// 
+// Get single student details with populated course info
 router.get('/view-student/:id',checkAuth,async (req,res)=>{
     try{
-    const data=await Students.findById(req.params.id);
-    res.status(200).json({details: data});
+    const data=await Students.findById(req.params.id).populate('courses');
+    if (!data) {
+        return res.status(404).json({ error: "Student not found" });
+    }
+
+    const studentObj = data.toObject();
+    // Handle legacy fallback for backward compatibility
+    if (studentObj.courseId && (!studentObj.courses || studentObj.courses.length === 0)) {
+        const legacyCourse = await Course.findById(studentObj.courseId);
+        if (legacyCourse) {
+            studentObj.courses = [legacyCourse];
+        }
+    }
+
+    res.status(200).json({details: studentObj});
     }catch(err){
         console.error("Fetch Error:", err.message);
         res.status(500).json({

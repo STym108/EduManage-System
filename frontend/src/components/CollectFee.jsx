@@ -44,7 +44,7 @@ const CollectFee = () => {
         try {
             const token = localStorage.getItem('token');
             // The structured logic we discussed: sending phone and courseId as identifiers
-            const resp = await Api.post('/fees/add-fees', formData, {
+            const resp = await API.post('/fees/add-fees', formData, {
                 headers: { Authorization: `Bearer ${token}` }
             });
 

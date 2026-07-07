@@ -9,8 +9,11 @@ const studentSchema=mongoose.Schema({
 
     imageUrl:{type:String,required:true},
     imageId:{type:String,required:true},
-    teacherId:{type:String,required:true},
-    courseId:{type:String,required:true}
+    teacherId:{type:mongoose.Schema.Types.ObjectId, ref: 'User', required:true},
+    // Normalized list of course references for many-to-many enrollment
+    courses:[{type:mongoose.Schema.Types.ObjectId, ref: 'Course'}],
+    // Legacy courseId kept for database backward compatibility
+    courseId:{type:String,required:false}
 },{timestamps:true})
 
 module.exports=mongoose.model("Student",studentSchema)

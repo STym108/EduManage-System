@@ -16,6 +16,11 @@ cloudinary.config({
 
 //add new course route
 router.post('/add-course',checkAuth,(req,res)=>{
+       // Safety: only admins can create courses
+       if (req.userData.role !== 'admin') {
+           return res.status(403).json({ error: "Access Denied: Only Admins can register courses" });
+       }
+
        //  Check if files exist before calling cloudinary
        if (!req.files || !req.files.image) {
         return res.status(400).json({ error: "No image uploaded" });
@@ -39,7 +44,7 @@ router.post('/add-course',checkAuth,(req,res)=>{
                     endDate:req.body.endDate,
                     imageUrl: result.secure_url,
                     imageId: result.public_id,
-                    creatorId:req.userData.userId
+                    creatorId:req.userData.adminId
                 });
                //  4. Save to Database
 
@@ -62,7 +67,7 @@ router.post('/add-course',checkAuth,(req,res)=>{
 
 router.get('/all-courses',checkAuth,async (req,res)=>{
 try{
-    const findcourses=await Course.find({creatorId:req.userData.userId})
+    const findcourses=await Course.find({creatorId:req.userData.adminId})
     console.log("found all the courses of this teacher ")
 //i changed this response from just findcourses naked array to an object where i can send as many data along with the array i want 
 res.status(200).json({
@@ -83,11 +88,30 @@ router.get('/course-detail/:id',checkAuth,async (req,res)=>{
     try{
 
         const findcourse=await Course.findById(req.params.id)
-        const allstudents=await Students.find({courseId:req.params.id})
+        // Find students that have this courseId in either legacy or normalized array
+        const allstudents=await Students.find({
+            $or: [
+                { courseId: req.params.id },
+                { courses: req.params.id }
+            ]
+        }).populate('courses')
+
+        // Handle legacy fallback for backward compatibility
+        const processedStudents = await Promise.all(allstudents.map(async (st) => {
+            const studentObj = st.toObject();
+            if (studentObj.courseId && (!studentObj.courses || studentObj.courses.length === 0)) {
+                const legacyCourse = await Course.findById(studentObj.courseId);
+                if (legacyCourse) {
+                    studentObj.courses = [legacyCourse];
+                }
+            }
+            return studentObj;
+        }));
+
         console.log(" the course whose id is given  ")
         res.status(200).json({
             course:findcourse,
-            students:allstudents
+            students:processedStudents
         })
 
     }

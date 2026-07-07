@@ -8,6 +8,9 @@ import API from './api.js'
 
 const Viewstudent = () => {
   // 1. ALL HOOKS AT THE TOP
+  const userData = JSON.parse(localStorage.getItem('user'));
+  const isAdmin = !userData || userData.role === 'admin';
+
   const [updatedDate, setUpdatedDate] = useState("");
   const { id } = useParams();
   const [student, setStudent] = useState(null);
@@ -85,6 +88,8 @@ const Viewstudent = () => {
   if (!student) return <div className="error">Student not found.</div>;
 
   const totalPaid = paymentHistory.reduce((sum, item) => sum + item.amount, 0);
+  const totalCourseCost = student.courses ? student.courses.reduce((sum, c) => sum + (c.price || 0), 0) : 0;
+  const outstandingDue = Math.max(0, totalCourseCost - totalPaid);
 
   return (
     <div className="student-profile-wrapper">
@@ -108,9 +113,65 @@ const Viewstudent = () => {
             </span>
           </div>
         </div>
-        <div className="fee-summary-badge">
-          <span className="label">Total Paid </span>
-          <span className="amount">₹{totalPaid}</span>
+        <div style={{ marginLeft: 'auto', display: 'flex', gap: '15px' }}>
+          <div className="fee-summary-badge" style={{ background: '#f8fafc', color: '#475569', border: '1px solid #e2e8f0', minWidth: '120px' }}>
+            <span className="label" style={{ display: 'block', fontSize: '10px', textTransform: 'uppercase', color: '#64748b', fontWeight: 'bold' }}>Total Cost</span>
+            <span className="amount" style={{ fontWeight: '800', fontSize: '1.2rem', display: 'block', marginTop: '4px' }}>₹{totalCourseCost}</span>
+          </div>
+          <div className="fee-summary-badge" style={{ background: '#ecfdf5', color: '#065f46', border: '1px solid #a7f3d0', minWidth: '120px' }}>
+            <span className="label" style={{ display: 'block', fontSize: '10px', textTransform: 'uppercase', color: '#047857', fontWeight: 'bold' }}>Total Paid</span>
+            <span className="amount" style={{ fontWeight: '800', fontSize: '1.2rem', display: 'block', marginTop: '4px' }}>₹{totalPaid}</span>
+          </div>
+          <div className="fee-summary-badge" style={{ 
+            background: outstandingDue > 0 ? '#fef2f2' : '#f0fdf4', 
+            color: outstandingDue > 0 ? '#991b1b' : '#166534', 
+            border: outstandingDue > 0 ? '1px solid #fca5a5' : '1px solid #bbf7d0',
+            minWidth: '120px' 
+          }}>
+            <span className="label" style={{ 
+              display: 'block', 
+              fontSize: '10px', 
+              textTransform: 'uppercase', 
+              color: outstandingDue > 0 ? '#b91c1c' : '#15803d',
+              fontWeight: 'bold'
+            }}>
+              {outstandingDue > 0 ? "Outstanding Due" : "Fully Paid"}
+            </span>
+            <span className="amount" style={{ fontWeight: '800', fontSize: '1.2rem', display: 'block', marginTop: '4px' }}>
+              {outstandingDue > 0 ? `₹${outstandingDue}` : <i className="fas fa-check-circle" style={{ color: '#10b981' }}></i>}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* Enrolled Courses / Subjects Section */}
+      <div className="payment-history-section" style={{ marginTop: '20px', marginBottom: '20px' }}>
+        <h3>Enrolled Subjects / Courses</h3>
+        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', marginTop: '12px' }}>
+          {student.courses && student.courses.length > 0 ? (
+            student.courses.map((course) => (
+              <div 
+                key={course._id} 
+                style={{ 
+                  padding: '8px 16px', 
+                  background: '#eef2ff', 
+                  color: '#4f46e5', 
+                  borderRadius: '20px', 
+                  fontSize: '13px', 
+                  fontWeight: '600', 
+                  border: '1px solid #c7d2fe',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px'
+                }}
+              >
+                <i className="fas fa-book"></i>
+                {course.courseName} <span style={{ color: '#818cf8', fontWeight: '400' }}>(₹{course.price})</span>
+              </div>
+            ))
+          ) : (
+            <span style={{ color: '#888', fontSize: '13px', fontStyle: 'italic' }}>No enrolled subjects.</span>
+          )}
         </div>
       </div>
 
@@ -123,7 +184,7 @@ const Viewstudent = () => {
                 <th>Date</th>
                 <th>Amount</th>
                 <th>Remark</th>
-                <th>Actions</th>
+                {isAdmin && <th>Actions</th>}
               </tr>
             </thead>
             <tbody>
@@ -136,14 +197,16 @@ const Viewstudent = () => {
                   </td>
                   <td className="amount-cell">₹{payment.amount}</td>
                   <td>{payment.remark}</td>
-                  <td>
-                    <button
-                      className="edit-mini-btn"
-                      onClick={() => handleEditClick(payment)}
-                    >
-                      <i className="fas fa-edit"></i> Edit
-                    </button>
-                  </td>
+                  {isAdmin && (
+                    <td>
+                      <button
+                        className="edit-mini-btn"
+                        onClick={() => handleEditClick(payment)}
+                      >
+                        <i className="fas fa-edit"></i> Edit
+                      </button>
+                    </td>
+                  )}
                 </tr>
               ))}
             </tbody>

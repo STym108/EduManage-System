@@ -82,10 +82,9 @@ const [buttonloader, setbuttonloader] = useState(false);
 
             <input required onChange={(e) => setpassword(e.target.value)} type='password' placeholder='Password' />
 
+            <Link to='/forgot-password' style={{ alignSelf: 'flex-end', marginTop: '-10px', marginBottom: '15px', color: '#4f46e5', fontSize: '13px', textDecoration: 'none' }}>Forgot Password?</Link>
 
-
-
-            <button  type='submit'>{buttonloader&&<i class="fas fa-spinner fa-spin"></i>}
+            <button  type='submit'>{buttonloader&&<i className="fas fa-spinner fa-spin"></i>}
             Submit</button>
           </form>
         <div className="create-account">
