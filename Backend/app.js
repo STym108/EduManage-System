@@ -20,7 +20,11 @@ const cors = require('cors');
 
 // CORS Configuration: Dynamic origin list supporting multiple local dev ports.
 // Necessary because Vite starts on 5174 if 5173 is occupied.
-const allowedOrigins = ['http://localhost:5173', 'http://localhost:5174'];
+const allowedOrigins = [
+    'http://localhost:5173', 
+    'http://localhost:5174',
+    'https://edumanage-system-frontend.onrender.com'
+];
 app.use(cors({
     origin: (origin, callback) => {
         // Allow curl/mobile requests (no origin header) or listed origins
